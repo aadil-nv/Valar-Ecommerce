@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { Product, IProduct } from "../models/product.model";
 
 export const createProduct = async (data: Partial<IProduct>) => {
@@ -28,3 +29,15 @@ export const decreaseStock = async (productId: string, quantity: number) => {
   return product;
 };
 
+export const bulkSoftDeleteProducts = async (productIds: string[]) => {
+    console.log("sof deleted sevive==>",productIds);
+    
+  const objectIds = productIds.map((id) => new Types.ObjectId(id));
+
+  const result = await Product.updateMany(
+    { _id: { $in: objectIds }, isDeleted: false },
+    { isDeleted: true, deletedAt: new Date() }
+  );
+
+  return result;
+};

@@ -8,6 +8,7 @@ export interface IProduct extends Document {
   inventoryCount: number;
   createdAt: Date;
   updatedAt: Date;
+  isDeleted:boolean
 }
 
 const productSchema = new Schema<IProduct>(
@@ -16,6 +17,7 @@ const productSchema = new Schema<IProduct>(
     category: { type: Schema.Types.ObjectId, ref: "Category", required: true },
     price: { type: Number, required: true },
     inventoryCount: { type: Number, default: 0 },
+    isDeleted: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

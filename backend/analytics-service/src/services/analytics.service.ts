@@ -1,6 +1,6 @@
 import { Analytics, IAnalytics } from "../models/analytics.model";
 
-export const saveAnalyticsEvent = async (event: Partial<IAnalytics>) => {
+export const saveAnalyticsEvent = async (event: Partial<IAnalytics>) => {    
   const analytics = new Analytics(event);
   await analytics.save();
   return analytics;

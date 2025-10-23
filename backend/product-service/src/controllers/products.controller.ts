@@ -8,7 +8,6 @@ export const createProductController = async (req: Request, res: Response, next:
   try {
     const product: IProduct = await ProductService.createProduct(req.body);
 
-    // Populate category
     const populatedProduct = await product.populate<{ category: { name: string } }>("category");
 
     const eventData: ProductEventData = {
@@ -71,6 +70,30 @@ export const updateInventoryController = async (req: Request, res: Response, nex
 
     await publishProductEvent("inventory_updated", eventData);
     res.json(product);
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const bulkSoftDeleteProductsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { productIds } = req.body;
+    console.log("product fromcontroller",productIds);
+    
+
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ message: "productIds must be a non-empty array" });
+    }
+
+    const result = await ProductService.bulkSoftDeleteProducts(productIds);
+
+    res.status(200).json({
+      message: `${result.modifiedCount} products soft deleted successfully`,
+    });
   } catch (err) {
     next(err);
   }

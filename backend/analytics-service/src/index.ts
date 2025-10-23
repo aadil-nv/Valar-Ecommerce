@@ -9,6 +9,8 @@ import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
 import { connectQueue } from "./queues/analytics.queue";
 import { startWebSocketServer } from "./websockets/ws.server";
+import { connectOrderQueue } from "./queues/order.queue";
+import { connectProductQueue } from "./queues/product.queue";
 
 const app = express();
 const server = http.createServer(app);
@@ -26,6 +28,8 @@ const startServer = async () => {
     console.log(`MongoDB connected`.bgYellow.white);
 
     await connectQueue();
+    await connectOrderQueue() 
+    await connectProductQueue()
 
     startWebSocketServer(server);
 

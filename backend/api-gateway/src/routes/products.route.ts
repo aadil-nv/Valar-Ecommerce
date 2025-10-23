@@ -37,31 +37,24 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
 // Update a product
 router.patch("/:id", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = await httpClient("PATCH", `${config.PRODUCT_SERVICE_URL}/products/${req.params.id}`, req.body);
+    const data = await httpClient("PATCH", `${config.PRODUCT_SERVICE_URL}/api/products/${req.params.id}`, req.body);
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+router.patch("/bulk-delete", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const data = await httpClient(
+      "PATCH",
+      `${config.PRODUCT_SERVICE_URL}/api/products/bulk-delete`,
+      req.body
+    );
     res.json(data);
   } catch (err) {
     next(err);
   }
 });
 
-// Get all categories
-router.get("/categories", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = await httpClient("GET", `${config.PRODUCT_SERVICE_URL}/categories`);
-    res.json(data);
-  } catch (err) {
-    next(err);
-  }
-});
-
-// Create a new category
-router.post("/categories", async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const data = await httpClient("POST", `${config.PRODUCT_SERVICE_URL}/categories`, req.body);
-    res.status(201).json(data);
-  } catch (err) {
-    next(err);
-  }
-});
 
 export default router;
