@@ -5,6 +5,7 @@ import { config } from "./config/env.config";
 import ordersRouter from "./routes/orders.route";
 import productsRouter from "./routes/products.route";
 import analyticsRouter from "./routes/analytics.route";
+import categoryRouter from "./routes/category.route";
 import alertsRouter from "./routes/alerts.route";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
@@ -19,6 +20,7 @@ app.use("/api/orders", ordersRouter);
 app.use("/api/products", productsRouter);
 app.use("/api/analytics", analyticsRouter);
 app.use("/api/alerts", alertsRouter);
+app.use("/api/categories", categoryRouter);
 
 app.use(errorHandler);
 

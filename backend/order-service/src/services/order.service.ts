@@ -13,3 +13,5 @@ export const getOrders = async (): Promise<IOrder[]> => {
 export const updateOrderStatus = async (orderId: string, status: string): Promise<IOrder | null> => {
   return Order.findByIdAndUpdate(orderId, { status }, { new: true });
 };
+
+

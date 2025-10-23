@@ -4,6 +4,7 @@ import "colors"
 import mongoose from "mongoose";
 import { config } from "./config/env.config";
 import productsRouter from "./routes/products.route";
+import categoryRouter from "./routes/category.route";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
 import { connectQueue } from "./queues/product.queue";
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(logger);
 
 app.use("/api/products", productsRouter);
+app.use("/api/categories", categoryRouter); // Temporary: categories handled in product service
 app.use(errorHandler);
 
 const startServer = async () => {

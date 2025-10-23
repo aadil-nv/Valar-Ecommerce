@@ -17,3 +17,5 @@ export const updateProduct = async (productId: string, data: Partial<IProduct>) 
 export const updateInventory = async (productId: string, count: number) => {
   return await Product.findByIdAndUpdate(productId, { inventoryCount: count }, { new: true });
 };
+
+

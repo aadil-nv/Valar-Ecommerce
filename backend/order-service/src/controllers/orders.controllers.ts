@@ -15,7 +15,7 @@ export const createOrderController = async (
       orderId: (order._id as Types.ObjectId).toString(), // cast _id to ObjectId
       customerId: order.customerId,
       total: order.total,
-      items: order.items.map(item => ({
+      items: order.items.map((item) => ({
         productId: item.productId,
         quantity: item.quantity,
         price: item.price,
@@ -31,7 +31,11 @@ export const createOrderController = async (
     next(err);
   }
 };
-export const getOrdersController = async (req: Request, res: Response, next: NextFunction) => {
+export const getOrdersController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const orders = await OrderService.getOrders();
     res.json(orders);
