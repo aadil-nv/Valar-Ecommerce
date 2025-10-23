@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import "colors"; // correct import
 import { config } from "./config/env.config";
 import ordersRouter from "./routes/orders";
 import productsRouter from "./routes/products";
@@ -22,5 +23,5 @@ app.use("/api/alerts", alertsRouter);
 app.use(errorHandler);
 
 app.listen(config.PORT, () => {
-  console.log(`API Gateway running on port ${config.PORT}`);
+  console.log(`API Gateway running on port ${config.PORT}.`.bgWhite.bold);
 });
