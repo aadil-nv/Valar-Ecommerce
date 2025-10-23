@@ -1,15 +1,15 @@
-import { Order, IOrder } from "../models/order.model";
+// src/services/order.service.ts
+import { IOrder, Order } from "../models/order.model";
 
-export const createOrder = async (data: Partial<IOrder>) => {
+export const createOrder = async (data: Partial<IOrder>): Promise<IOrder> => {
   const order = new Order(data);
-  await order.save();
-  return order;
+  return order.save();
 };
 
-export const getOrders = async () => {
-  return await Order.find().sort({ createdAt: -1 });
+export const getOrders = async (): Promise<IOrder[]> => {
+  return Order.find();
 };
 
-export const updateOrderStatus = async (orderId: string, status: string) => {
-  return await Order.findByIdAndUpdate(orderId, { status }, { new: true });
+export const updateOrderStatus = async (orderId: string, status: string): Promise<IOrder | null> => {
+  return Order.findByIdAndUpdate(orderId, { status }, { new: true });
 };
