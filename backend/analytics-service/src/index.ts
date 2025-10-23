@@ -1,30 +1,36 @@
 import express from "express";
+import http from "http";
 import cors from "cors";
+import "colors";
 import mongoose from "mongoose";
 import { config } from "./config/env.config";
-import ordersRouter from "./routes/orders";
+import analyticsRouter from "./routes/analytics";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
-import { connectQueue } from "./queues/order.queue";
+import { connectQueue } from "./queues/analytics.queue";
+import { startWebSocketServer } from "./websockets/ws.server";
 
 const app = express();
+const server = http.createServer(app);
 
 app.use(cors());
 app.use(express.json());
 app.use(logger);
 
-app.use("/api/orders", ordersRouter);
+app.use("/api/analytics", analyticsRouter);
 app.use(errorHandler);
 
 const startServer = async () => {
   try {
     await mongoose.connect(config.MONGO_URI);
-    console.log("MongoDB connected");
+    console.log(`MongoDB connected`.bgYellow.white);
 
     await connectQueue();
 
-    app.listen(config.PORT, () => {
-      console.log(`Order Service running on port ${config.PORT}`);
+    startWebSocketServer(server);
+
+    server.listen(config.PORT, () => {
+      console.log(`Analytics Service running on port ${config.PORT}`.bgCyan.bold);
     });
   } catch (err) {
     console.error("Failed to start server", err);
