@@ -7,6 +7,8 @@ import ordersRouter from "./routes/orders.route";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
 import { connectQueue } from "./queues/order.queue";
+import { startProductConsumer } from "./queues/product.consumer";
+import { connectProductQueue } from "./queues/product.queue";
 
 const app = express();
 
@@ -23,6 +25,8 @@ const startServer = async () => {
     console.log(`MongoDB connected`.bgYellow.bold);
 
     await connectQueue();
+    await connectProductQueue();
+    await startProductConsumer();
 
     app.listen(config.PORT, () => {
       console.log(`Order Service running on port ${config.PORT}`.bgMagenta.bold);

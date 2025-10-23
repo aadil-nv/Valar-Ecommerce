@@ -19,3 +19,12 @@ export const updateInventory = async (productId: string, count: number) => {
 };
 
 
+export const decreaseStock = async (productId: string, quantity: number) => {    
+  const product = await Product.findById(productId);
+  if (!product) throw new Error("Product not found");
+  if (product.inventoryCount < quantity) throw new Error("Not enough inventory");
+  product.inventoryCount -= quantity;
+  await product.save();
+  return product;
+};
+

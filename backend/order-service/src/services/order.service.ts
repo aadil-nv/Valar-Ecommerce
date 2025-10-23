@@ -14,4 +14,6 @@ export const updateOrderStatus = async (orderId: string, status: string): Promis
   return Order.findByIdAndUpdate(orderId, { status }, { new: true });
 };
 
-
+export const markOrderAsFailed = async (orderId: string) => {
+  await Order.findByIdAndUpdate(orderId, { status: "failed" });
+};

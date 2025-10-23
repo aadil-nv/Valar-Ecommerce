@@ -4,7 +4,7 @@ import { ProductEventData, publishProductEvent } from "../queues/product.queue";
 import { IProduct } from "../models/product.model";
 import { Types } from "mongoose";
 
-export const createProductController = async (req: Request, res: Response, next: NextFunction) => {
+export const createProductController = async (req: Request, res: Response, next: NextFunction) => {    
   try {
     const product: IProduct = await ProductService.createProduct(req.body);
 

@@ -9,3 +9,4 @@ export const getAnalyticsController = async (req: Request, res: Response, next: 
     next(err);
   }
 };
+
