@@ -2,10 +2,10 @@ import express from "express";
 import cors from "cors";
 import "colors"; // correct import
 import { config } from "./config/env.config";
-import ordersRouter from "./routes/orders";
-import productsRouter from "./routes/products";
-import analyticsRouter from "./routes/analytics";
-import alertsRouter from "./routes/alerts";
+import ordersRouter from "./routes/orders.route";
+import productsRouter from "./routes/products.route";
+import analyticsRouter from "./routes/analytics.route";
+import alertsRouter from "./routes/alerts.route";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
 

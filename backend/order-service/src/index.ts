@@ -3,7 +3,7 @@ import cors from "cors";
 import "colors"
 import mongoose from "mongoose";
 import { config } from "./config/env.config";
-import ordersRouter from "./routes/orders";
+import ordersRouter from "./routes/orders.route";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
 import { connectQueue } from "./queues/order.queue";
