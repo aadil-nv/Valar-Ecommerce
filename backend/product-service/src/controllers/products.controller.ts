@@ -82,7 +82,6 @@ export const bulkSoftDeleteProductsController = async (
 ) => {
   try {
     const { productIds } = req.body;
-    console.log("product fromcontroller",productIds);
     
 
     if (!Array.isArray(productIds) || productIds.length === 0) {
@@ -96,5 +95,20 @@ export const bulkSoftDeleteProductsController = async (
     });
   } catch (err) {
     next(err);
+  }
+};
+
+
+export const getProductsByIdsController = async (req: Request, res: Response ,next:NextFunction) => {    
+  try {
+    const ids = (req.query.ids as string)?.split(",") || [];
+    if (!ids.length) {
+      return res.status(400).json({ error: "Product IDs are required" });
+    }
+
+    const products = await ProductService.getProductsByIdsService(ids);
+    res.json(products);
+  } catch (err) {
+    next(err)
   }
 };

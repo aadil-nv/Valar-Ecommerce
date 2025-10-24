@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   bulkSoftDeleteProductsController,
   createProductController,
+  getProductsByIdsController,
   getProductsController,
   updateInventoryController,
   updateProductController,
@@ -16,5 +17,6 @@ router.patch("/bulk-delete", bulkSoftDeleteProductsController);
 
 router.patch("/:productId/inventory", updateInventoryController);
 router.patch("/:productId", updateProductController);
+router.get("/bulk", getProductsByIdsController);
 
 export default router;

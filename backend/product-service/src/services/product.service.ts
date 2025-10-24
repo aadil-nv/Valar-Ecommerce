@@ -41,3 +41,15 @@ export const bulkSoftDeleteProducts = async (productIds: string[]) => {
 
   return result;
 };
+
+export const getProductsByIdsService = async (productIds: string[]) => {
+  const validIds = productIds.filter((id) => Types.ObjectId.isValid(id));
+  if (!validIds.length) return [];
+
+  const products = await Product.find({
+    _id: { $in: validIds },
+    isDeleted: { $ne: true }, // exclude soft-deleted products
+  });
+
+  return products;
+};

@@ -7,6 +7,7 @@ import productsRouter from "./routes/products.route";
 import analyticsRouter from "./routes/analytics.route";
 import categoryRouter from "./routes/category.route";
 import alertsRouter from "./routes/alerts.route";
+import salesRouter from "./routes/sales.route";
 import { logger } from "./middlewares/logger";
 import { errorHandler } from "./middlewares/error.handler";
 
@@ -21,6 +22,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/analytics", analyticsRouter);
 app.use("/api/alerts", alertsRouter);
 app.use("/api/categories", categoryRouter);
+app.use("/api/sales", salesRouter);
 
 app.use(errorHandler);
 

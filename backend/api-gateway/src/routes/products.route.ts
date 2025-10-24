@@ -56,5 +56,20 @@ router.patch("/bulk-delete", async (req: Request, res: Response, next: NextFunct
   }
 });
 
+router.get("/bulk/:ids", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const ids = req.params.ids; // <-- use params, not query
+    console.log("ids is ",ids);
+    
+    const data = await httpClient(
+      "GET",
+      `${config.PRODUCT_SERVICE_URL}/api/products/bulk/${ids}` // match product service route
+    );
+    res.json(data);
+  } catch (err) {
+    next(err);
+  }
+});
+
 
 export default router;
