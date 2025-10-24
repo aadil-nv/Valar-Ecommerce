@@ -15,7 +15,6 @@ export interface OrderEventData {
   createdAt: string;
 }
 
-// Define the shape of a message sent to the queue
 export interface OrderEventMessage {
   event: string;
   data: OrderEventData;
@@ -24,7 +23,6 @@ export interface OrderEventMessage {
 let channel: Channel;
 const QUEUE_NAME = config.ORDER_QUEUE_NAME as string;
 
-// Connect to RabbitMQ and initialize the queue
 export const connectQueue = async (): Promise<void> => {
   const connection = await amqp.connect(config.RABBITMQ_URI as string);
   channel = await connection.createChannel();
@@ -32,14 +30,12 @@ export const connectQueue = async (): Promise<void> => {
   console.log("RabbitMQ connected and queue ready");
 };
 
-// Publish order event to the queue
 export const publishOrderEvent = async (event: string, data: OrderEventData): Promise<void> => {
   if (!channel) throw new Error("RabbitMQ channel not initialized");
   const message: OrderEventMessage = { event, data };
   channel.sendToQueue(QUEUE_NAME, Buffer.from(JSON.stringify(message)), { persistent: true });
 };
 
-// Consume order events from the queue
 export const consumeOrderEvents = async (
   callback: (msg: OrderEventMessage) => void
 ): Promise<void> => {

@@ -1,7 +1,6 @@
 import { consumeProductEvents } from "./product.queue";
 import * as OrderService from "../services/order.service";
 
-// Updated interface to include orderId
 export interface ProductEventData {
   productId: string;
   name?: string;
@@ -9,7 +8,7 @@ export interface ProductEventData {
   inventory?: number;
   eventType: string;
   categoryName?: string;
-  orderId?: string; // added to track which order caused this event
+  orderId?: string; 
 }
 
 export interface ProductEventMessage {
@@ -17,7 +16,6 @@ export interface ProductEventMessage {
   data: ProductEventData;
 }
 
-// Handle product events coming from the queue
 export const handleProductEvents = async (msg: ProductEventMessage) => {
   const { event, data } = msg;
 
@@ -27,7 +25,6 @@ export const handleProductEvents = async (msg: ProductEventMessage) => {
   }
 };
 
-// Start the consumer
 export const startProductConsumer = async () => {
   await consumeProductEvents(handleProductEvents);
 };

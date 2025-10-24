@@ -4,7 +4,7 @@ import { config } from "../config/env.config";
 let channel: amqp.Channel;
 const QUEUE_NAME = config.PRODUCT_QUEUE_NAME as string
 
-// Message shape from Product Service
+
 export interface ProductEventData {
   productId: string;
   name?: string;
@@ -12,7 +12,7 @@ export interface ProductEventData {
   inventory?: number;
   eventType: string;
   categoryName?: string;
-  orderId?: string; // added to track which order caused this event
+  orderId?: string; 
 }
 
 export interface ProductEventMessage {
