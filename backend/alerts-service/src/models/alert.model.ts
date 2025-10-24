@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IAlert extends Document {
-  type: "low"| "medium"| "high"| "critical" | string; // allow any type
+  type: "low"| "medium"| "high"| "critical" | string; 
   message: string;
   status: "pending" | "sent" | "failed";
   resolved:boolean

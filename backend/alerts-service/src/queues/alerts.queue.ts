@@ -5,10 +5,10 @@ import { broadcastAlertUpdate } from "../websocket/ws.server";
 
 let channel: amqp.Channel;
 
-const QUEUE_NAME = "alerts";
+const QUEUE_NAME = config.ALERT_QUEUE_NAME as string ;
 
 export const connectQueue = async () => {
-  const connection = await amqp.connect(config.RABBITMQ_URI);
+  const connection = await amqp.connect(config.RABBITMQ_URI as string);
   channel = await connection.createChannel();
   await channel.assertQueue(QUEUE_NAME, { durable: true });
 
@@ -29,13 +29,11 @@ const consumeAlerts = async () => {
     if (msg) {
       const data = JSON.parse(msg.content.toString());
 
-      // Save alert in DB
       const alert = await createAlert({
         type: data.type,
         message: data.message,
       });
 
-      // Broadcast via WebSocket
       broadcastAlertUpdate(alert);
 
       channel.ack(msg);

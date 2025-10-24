@@ -16,7 +16,6 @@ export interface OrderEventData {
   createdAt: string;
 }
 
-// Define the shape of a message sent to the queue
 export interface OrderEventMessage {
   event: string;
   data: OrderEventData;
@@ -30,7 +29,6 @@ export const handleOrderCreated = async (msg: OrderEventMessage) => {
       await ProductService.decreaseStock(item.productId, item.quantity);
     }
 
-    // ✅ Publish success
     await publishProductEvent("inventory_updated_success", {
       productId: "",
       eventType: "inventory_updated_success",
@@ -40,7 +38,6 @@ export const handleOrderCreated = async (msg: OrderEventMessage) => {
   } catch (error) {
     console.error("❌ Product stock update failed:", error);
 
-    // ❌ Notify order service
     await publishProductEvent("inventory_update_failed", {
       productId: "",
       eventType: "inventory_update_failed",

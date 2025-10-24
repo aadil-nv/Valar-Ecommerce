@@ -3,8 +3,6 @@ import { saveAnalyticsEvent } from "../services/analytics.service";
 import { broadcastAnalyticsUpdate } from "../websockets/ws.server";
 import { config } from "../config/env.config";
 
-const PRODUCT_QUEUE = "products";
-
 export interface ProductEventData {
   productId: string;
   name?: string;
@@ -18,9 +16,11 @@ export interface ProductEventMessage {
   event: string;
   data: ProductEventData;
 }
+const PRODUCT_QUEUE = config.PRODUCT_QUEUE_NAME as string;
+
 
 export const connectProductQueue = async () => {
-  const connection = await amqp.connect(config.RABBITMQ_URI);
+  const connection = await amqp.connect(config.RABBITMQ_URI as string);
   const channel: Channel = await connection.createChannel();
   await channel.assertQueue(PRODUCT_QUEUE, { durable: true });
 

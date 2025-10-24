@@ -16,9 +16,7 @@ export const createOrderController = async (
 ) => {
   try {
     const { items, customerId, total } = req.body;    
-    const productIds = items.map((item:OrderItem) => item.productId);
-    console.log("product is is ",productIds);
-    
+    const productIds = items.map((item:OrderItem) => item.productId);    
     let products;
     try {
       products = await getProductDetails(productIds);
@@ -31,10 +29,8 @@ export const createOrderController = async (
       return res.status(400).json({ error: "One or more products are invalid" });
     }
 
-    // 2️⃣ Create order
     const order = await OrderService.createOrder({ customerId, items, total });
 
-    // 3️⃣ Publish order created event
     const orderEventData: OrderEventData = {
       orderId: (order._id as Types.ObjectId).toString(),
       customerId: order.customerId,

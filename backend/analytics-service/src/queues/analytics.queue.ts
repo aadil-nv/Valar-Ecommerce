@@ -1,11 +1,11 @@
 import amqp, { Channel, ConsumeMessage } from "amqplib";
 import { config } from "../config/env.config";
 
-const ANALYTICS_QUEUE = "analytics";
+const ANALYTICS_QUEUE = config.ANALYTICS_QUEUE_NAME as string
 let analyticsChannel: Channel;
 
 export const connectQueue = async () => {
-  const connection = await amqp.connect(config.RABBITMQ_URI);
+  const connection = await amqp.connect(config.RABBITMQ_URI as string);
   analyticsChannel = await connection.createChannel();
   await analyticsChannel.assertQueue(ANALYTICS_QUEUE, { durable: true });
 

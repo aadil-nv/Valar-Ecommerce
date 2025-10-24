@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import "colors"; // correct import
+import "colors"; 
 import { config } from "./config/env.config";
 import ordersRouter from "./routes/orders.route";
 import productsRouter from "./routes/products.route";

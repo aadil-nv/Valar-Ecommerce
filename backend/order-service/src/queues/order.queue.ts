@@ -22,11 +22,11 @@ export interface OrderEventMessage {
 }
 
 let channel: Channel;
-const QUEUE_NAME = "orders";
+const QUEUE_NAME = config.ORDER_QUEUE_NAME as string;
 
 // Connect to RabbitMQ and initialize the queue
 export const connectQueue = async (): Promise<void> => {
-  const connection = await amqp.connect(config.RABBITMQ_URI);
+  const connection = await amqp.connect(config.RABBITMQ_URI as string);
   channel = await connection.createChannel();
   await channel.assertQueue(QUEUE_NAME, { durable: true });
   console.log("RabbitMQ connected and queue ready");

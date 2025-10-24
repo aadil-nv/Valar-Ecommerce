@@ -22,7 +22,7 @@ app.use(errorHandler);
 
 const startServer = async () => {
   try {
-    await mongoose.connect(config.MONGO_URI);
+    await mongoose.connect(config.MONGO_URI as string);
     console.log(`MongoDB connected for Alerts Service`.bgYellow.bold);
 
     await connectQueue();

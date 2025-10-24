@@ -2,21 +2,21 @@ import amqp, { ConsumeMessage } from "amqplib";
 import { config } from "../config/env.config";
 
 let channel: amqp.Channel;
-const QUEUE_NAME = "products";
+const QUEUE_NAME = config.PRODUCT_QUEUE_NAME as string;
 
 export interface ProductEventData {
-    
+
   productId: string;
   name?: string;
   price?: number;
   inventory?: number;
   eventType: string;
-  categoryName?: string; // added optional category name
+  categoryName?: string; 
 }
 
 
 export const connectQueue = async () => {
-  const connection = await amqp.connect(config.RABBITMQ_URI);
+  const connection = await amqp.connect(config.RABBITMQ_URI as string);
   channel = await connection.createChannel();
   await channel.assertQueue(QUEUE_NAME, { durable: true });
   console.log( `Product Service RabbitMQ connected`.bgRed.white);
