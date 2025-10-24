@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   bulkSoftDeleteProductsController,
   createProductController,
+  getPaginatedProductsController,
   getProductsByIdsController,
   getProductsController,
   updateInventoryController,
@@ -12,6 +13,8 @@ const router = Router();
 
 router.post("/", createProductController); 
 router.get("/", getProductsController);
+router.get("/paginated", getPaginatedProductsController);
+
 
 router.patch("/bulk-delete", bulkSoftDeleteProductsController);
 

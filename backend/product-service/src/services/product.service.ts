@@ -9,7 +9,9 @@ export const createProduct = async (data: Partial<IProduct>) => {
 };
 
 export const getProducts = async () => {
-  return await Product.find().sort({ createdAt: -1 });
+  return await Product.find({ isDeleted: false })
+    .sort({ createdAt: -1 })
+    .populate("category");
 };
 
 export const updateProduct = async (productId: string, data: Partial<IProduct>) => {
@@ -58,4 +60,17 @@ export const getProductsByIdsService = async (productIds: string[]) => {
   });
 
   return products;
+};
+
+export const getPaginatedProducts = async (page: number, limit: number) => {
+  const skip = (page - 1) * limit;
+  const [products, total] = await Promise.all([
+    Product.find({ isDeleted: false })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
+      .populate("category"),
+    Product.countDocuments({ isDeleted: false }),
+  ]);
+  return { products, total };
 };

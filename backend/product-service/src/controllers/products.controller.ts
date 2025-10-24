@@ -28,7 +28,7 @@ export const createProductController = async (req: Request, res: Response, next:
 
 export const getProductsController = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const products: IProduct[] = await ProductService.getProducts();
+    const products: IProduct[] = await ProductService.getProducts()
     res.json(products);
   } catch (err) {
     next(err);
@@ -110,5 +110,30 @@ export const getProductsByIdsController = async (req: Request, res: Response ,ne
     res.json(products);
   } catch (err) {
     next(err)
+  }
+};
+
+export const getPaginatedProductsController = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const startTime = performance.now(); // Log start time
+
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    if (page < 1 || limit < 1) {
+      return res.status(400).json({ error: "Page and limit must be positive integers" });
+    }
+
+    // Cap limit to prevent excessive data fetching
+    const maxLimit = Math.min(limit, 100);
+
+    const { products, total } = await ProductService.getPaginatedProducts(page, maxLimit);
+
+    const endTime = performance.now(); // Log end time
+    console.log(`getPaginatedProducts took ${(endTime - startTime).toFixed(2)} ms`);
+
+    res.json({ products, total });
+  } catch (err) {
+    next(err);
   }
 };
