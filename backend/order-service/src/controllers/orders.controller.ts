@@ -2,17 +2,41 @@ import { Request, Response, NextFunction } from "express";
 import * as OrderService from "../services/order.service";
 import { publishOrderEvent, OrderEventData } from "../queues/order.queue";
 import { Types } from "mongoose";
+import { getProductDetails } from "../services/productClient.service";
 
+interface OrderItem {
+  productId: string;
+  quantity: number;
+  price: number;
+}
 export const createOrderController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const order = await OrderService.createOrder(req.body);
+    const { items, customerId, total } = req.body;    
+    const productIds = items.map((item:OrderItem) => item.productId);
+    console.log("product is is ",productIds);
+    
+    let products;
+    try {
+      products = await getProductDetails(productIds);
+      
+    } catch (err) {      
+      next(err)
+    }
 
+    if (!products || products.length !== productIds.length) {
+      return res.status(400).json({ error: "One or more products are invalid" });
+    }
+
+    // 2️⃣ Create order
+    const order = await OrderService.createOrder({ customerId, items, total });
+
+    // 3️⃣ Publish order created event
     const orderEventData: OrderEventData = {
-      orderId: (order._id as Types.ObjectId).toString(), // cast _id to ObjectId
+      orderId: (order._id as Types.ObjectId).toString(),
       customerId: order.customerId,
       total: order.total,
       items: order.items.map((item) => ({
@@ -27,7 +51,7 @@ export const createOrderController = async (
     await publishOrderEvent("order_created", orderEventData);
 
     res.status(201).json(order);
-  } catch (err) {
+  } catch (err: unknown) {
     next(err);
   }
 };
